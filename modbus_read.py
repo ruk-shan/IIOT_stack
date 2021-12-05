@@ -8,27 +8,33 @@
 from pyModbusTCP.client import ModbusClient
 from config import read_config
 
-class ReadModbus:
+class ReadModbus():
 
-    
-    def __init__(self, host,port,register,number_of_regs):
-        self.host = host
-        self.port  = port
-        self.register = register
-        self.number_of_regs = number_of_regs 
-  
+    def __init__(self,modbus_label):
+        config_data =  read_config()
+        modbus_config = config_data[modbus_label]
+        self.host = modbus_config["modbus_client_ip"]
+        self.port = modbus_config["modbus_port_number"]
+        self.register  =  modbus_config["modbus_reg_number"] 
+        self.number_of_regs = modbus_config["number_of_reg_to_read"]
+        self.status_msg = ""
+
     #connect to UR
     def connect_to_UR(self):
-        global modbus_conn
-        modbus_conn = ModbusClient(host="192.168.68.116", port=502, auto_open=True)
-        print ("connected to modbus")
+        try:
+            self.modbus_conn = ModbusClient(self.host, self.port, auto_open=True,auto_close=True)
+            print (self.modbus_conn)
+            self.status_msg = "connected to modbus"
+        except ValueError: 
+            print ("connection error")
+            self.status_msg = "connection error"
 
     #read UR joints
     def read_reg_UR(self):
-        global modbus_conn
-        reg = modbus_conn.read_holding_registers(206,1)
+        reg = self.modbus_conn.read_holding_registers(self.register,self.number_of_regs)
         return reg
+ 
 
-modbus_01 = ReadModbus("192.168.68.116",502,206,1)
-modbus_01.connect_to_UR()
-print (modbus_01.read_reg_UR())
+# modbus_01 = ReadModbus("robot_joints")
+# modbus_01.connect_to_UR()
+# print (modbus_01.read_reg_UR())

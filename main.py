@@ -19,7 +19,8 @@ def read_read_config():
 
 
 
-
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="localhost", port=8001)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8001)
+    uvicorn.run(app, port=8001)
