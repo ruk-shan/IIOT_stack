@@ -4,6 +4,8 @@ import uvicorn
 
 app = FastAPI()
 
+from config import read_config
+
 
 @app.get("/")
 def read_root():

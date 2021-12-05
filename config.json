@@ -1,0 +1,6 @@
+{
+    "modbus_client_ip":"192.168.68.113",
+    "modbus_port_number":502,
+    "modbus_reg_number":206,
+    "number_of_reg_to_read": 6 
+}
